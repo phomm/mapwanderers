@@ -95,9 +95,8 @@ private
 protected
   function Get(Index: Integer): TMoving;
   procedure Put(Index: Integer; const Value: TMoving);
-public                                 // 2 constructors
-  constructor Create; overload;     // for NOT owning objects
-  constructor Create(AOwnsObjects: Boolean); overload; // for owning
+public                                 
+  constructor Create(AOwnsObjects: Boolean = False);
   property Items[Index: Integer]: TMoving read Get write Put; default;
   function GetMoving(AMoving: NMoveKind): TMoving;  // searching method
   destructor Destroy; override;
@@ -285,7 +284,7 @@ end;
 
 function TSwimming.CanGo(AChuvMovt: TChuvMovement): Boolean;
 begin
-  Result := (AChuvMovt.DestCell.TerType = ttwater)and AChuvMovt.AllowPosChange(poWater);
+  Result := (AChuvMovt.DestCell.TerType = ttWater) and AChuvMovt.AllowPosChange(poWater);
 end;
 
 { Tdigging }
@@ -349,7 +348,7 @@ end;
 
 function TPosAir.AllowChange(CurCell, DestCell: TCell; Dist: Integer; NewPos: TPosition): Boolean;
 begin
-  Result := ((NewPos.FPosition in [poGround, poClimbed, poWater]) and (Dist in [0,1])) or
+  Result := ((NewPos.FPosition in [poGround, poClimbed, poWater]) and (Dist in [0, 1])) or
         ((NewPos.FPosition in [poAir]) and (Dist in [1]));
 end;
 { TPosClimbed }
@@ -364,7 +363,7 @@ end;
 
 function TPosDigged.AllowChange(CurCell, DestCell: TCell; Dist: Integer; NewPos: TPosition): Boolean;
 begin
-  Result := ((NewPos.FPosition in [poGround]) and (Dist in [0,1])) or
+  Result := ((NewPos.FPosition in [poGround]) and (Dist in [0, 1])) or
             ((NewPos.FPosition in [poWater, poDigged]) and (Dist in [1]));
 end;
 
@@ -566,23 +565,17 @@ destructor TMovingList.Destroy;
 var
   I: Integer;
 begin
-  if Count = 0  then
-    Exit;
-  for I := Count - 1 downto 0 do
-  begin
-    if FOwnsObjects then
-      Items[I].Free;
-    Delete(I);
-  end;
+  if Count <> 0  then
+    for I := Count - 1 downto 0 do
+    begin
+      if FOwnsObjects then
+        Items[I].Free;
+      Delete(I);
+    end;
   inherited;
 end;
 
-constructor TMovingList.Create;
-begin
-  inherited;
-end;
-
-constructor TMovingList.Create(AOwnsObjects: Boolean);
+constructor TMovingList.Create(AOwnsObjects: Boolean = False);
 begin
   inherited Create;
   FOwnsObjects := AOwnsObjects;
