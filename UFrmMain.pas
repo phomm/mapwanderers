@@ -11,6 +11,7 @@ type
     SG: TStringGrid;
     LPosition: TLabel;
     SGAbil: TStringGrid;
+    lblPriorities: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure SGDrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect;
       State: TGridDrawState);
@@ -36,8 +37,9 @@ implementation
 procedure TFrmMain.FormCreate(Sender: TObject);
 var
   I: Byte;
-begin                             // here some init
-  Caption := Application.Title;
+begin
+  // <some init
+  Caption := Application.Title + ' v0.1';
   Randomize;
   SG.FixedCols := 0;
   SG.FixedRows := 0;
@@ -47,15 +49,19 @@ begin                             // here some init
   SGAbil.FixedCols := 0;
   SGAbil.FixedRows := 1;
   SGAbil.DefaultColWidth := SGAbil.DefaultRowHeight;
-  SGAbil.ColWidths[0] := 70;
+  SGAbil.ColWidths[0] := 60;
   SGAbil.ColCount := 2 + Ord(High(NMoveKind));
   SGAbil.RowCount := 2 + Ord(High(NMoveKind));
-  SGAbil.Cells[0,0] := 'Priority';
+  SGAbil.Cells[0, 0] := 'Ability';
+  lblPriorities.Caption := 'Priorities';
   for I := Ord(Low(NMoveKind)) to Ord(High(NMoveKind)) do
     begin
       SGAbil.Cells[0, I + 1] := GetEnumName(TypeInfo(NMoveKind), I);
       SGAbil.Cells[I + 1, 0] := IntToStr(I + 1);
-    end;                                                       //-----
+    end;
+  SGAbil.ClientHeight := SGAbil.GridHeight;
+  SGAbil.ClientWidth := SGAbil.GridWidth;
+  // init>
 
   Game := TGame.create;                    // main game obj
   LPosition.Caption := 'Position : ' +     // write position
@@ -111,8 +117,10 @@ procedure TFrmMain.SGAbilMouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 var
   C, R: Integer;
-begin                              // here the jogging with priorities of abilities
-  SGAbil.MouseToCell(X, Y, C, R);     // using insCast, delCast, addCast
+begin
+  {TODO: push logic-dependent code in classes hierarchy and refactor this to kinda single call of it}
+  // here the jogging with priorities of abilities using insCast, delCast, addCast
+  SGAbil.MouseToCell(X, Y, C, R);
   if (C in [1..SGAbil.ColCount]) and (R in [1..SGAbil.RowCount]) then
     if Game.Chuvak.Movement.GetMoveAbil(NMoveKind(R - 1)) = nil then
       Game.Chuvak.InsCast(C - 1, NMoveKind(R - 1))

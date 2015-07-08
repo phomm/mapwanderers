@@ -16,11 +16,18 @@ object FrmMain: TFrmMain
   PixelsPerInch = 96
   TextHeight = 13
   object LPosition: TLabel
-    Left = 768
+    Left = 760
     Top = 8
     Width = 43
     Height = 13
     Caption = 'LPosition'
+  end
+  object lblPriorities: TLabel
+    Left = 760
+    Top = 47
+    Width = 49
+    Height = 13
+    Caption = 'lblPriorities'
   end
   object SG: TStringGrid
     Left = 0
@@ -32,10 +39,10 @@ object FrmMain: TFrmMain
     OnMouseUp = SGMouseUp
   end
   object SGAbil: TStringGrid
-    Left = 759
-    Top = 26
-    Width = 252
-    Height = 214
+    Left = 760
+    Top = 66
+    Width = 240
+    Height = 247
     ScrollBars = ssNone
     TabOrder = 1
     OnMouseUp = SGAbilMouseUp
