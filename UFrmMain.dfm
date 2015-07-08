@@ -31,13 +31,13 @@ object FrmMain: TFrmMain
     OnDrawCell = SGDrawCell
     OnMouseUp = SGMouseUp
   end
-  object SGabil: TStringGrid
+  object SGAbil: TStringGrid
     Left = 759
     Top = 26
     Width = 252
     Height = 214
     ScrollBars = ssNone
     TabOrder = 1
-    OnMouseUp = SGabilMouseUp
+    OnMouseUp = SGAbilMouseUp
   end
 end
