@@ -333,7 +333,7 @@ end;
 function TPosGround.AllowChange(CurCell, DestCell: TCell; Dist: Integer; NewPos: TPosition): Boolean;
 begin
   Result := ((NewPos.FPosition in [poGround, poClimbed, poWater]) and (Dist in [1])) or
-            ((NewPos.FPosition in [poAir, poDigged]) and (Dist in [0]));
+            ((NewPos.FPosition in [poAir, poDigged]) and (Dist in [0, 1]));
 end;
 
 { TPosWater }
@@ -341,7 +341,7 @@ end;
 function TPosWater.AllowChange(CurCell, DestCell: TCell; Dist: Integer; NewPos: TPosition): Boolean;
 begin
   Result := ((NewPos.FPosition in [poGround, poClimbed, poWater, poDigged]) and (Dist in [1])) or
-            ((NewPos.FPosition in [poAir]) and (Dist in [0]));
+            ((NewPos.FPosition in [poAir]) and (Dist in [0, 1]));
 end;
 
 { TPosAir }
@@ -356,7 +356,7 @@ end;
 function TPosClimbed.AllowChange(CurCell, DestCell: TCell; Dist: Integer; NewPos: TPosition): Boolean;
 begin
   Result := ((NewPos.FPosition in [poGround, poClimbed, poWater]) and (Dist in [1])) or
-            ((NewPos.FPosition in [poAir]) and (Dist in [0]));
+            ((NewPos.FPosition in [poAir]) and (Dist in [0, 1]));
 end;
 
 { TPosDigged }
